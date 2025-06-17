@@ -1,350 +1,599 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kepler AI Chat</title>
-    <style>
+    <title>Spark Hyacinthe - Portfolio</title>
+    <style type="text/css">
+        /* Réinitialisation des styles par défaut */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
+        /* Variables CSS pour les thèmes */
+        :root {
+            /* Mode clair (par défaut) */
+            --background-color: #f1f1f1;
+            /* Crème doux */
+            --text-color: #2d3748;
+            --header-bg: rgba(255, 255, 255, 0.9);
+            --header-title: #2d3748;
+            /* Gris foncé */
+            --header-subtitle: #4a9f8d;
+            /* Rose corail */
+            --project-title: #4299e1;
+            /* Bleu ciel */
+            --project-text: #4a5568;
+            --project-bg: rgba(119, 253, 179, 0.3);
+            /* Gris clair translucide */
+            --project-border: #4299e1;
+            --project-shadow: rgba(66, 153, 225, 0.2);
+            --project-shadow-hover: rgba(66, 153, 225, 0.4);
+            --jelly-btn-bg: #48bb78;
+            /* Vert menthe */
+            --jelly-btn-shadow: rgba(72, 187, 120, 0.3);
+            --jelly-btn-shadow-dark: rgba(72, 187, 120, 0.5);
+            --footer-bg: #edf2f7;
+            /* Gris clair */
+            --footer-text: #2d3748;
+            --footer-link: #4299e1;
+            --footer-link-hover: #3182ce;
+            --scroll-top-bg: #00C4B4;
+            /* Bleu ciel */
+            --scroll-top-bg-hover: #f6ad55;
+            /* Orange chaleureux */
+            --scroll-top-icon: #ffffff;
+            --scroll-top-shadow: rgba(0, 167, 125, 0.2);
+        }
+
+        [data-theme="dark"] {
+            /* Mode sombre amélioré */
+            --background-color: #1a202c;
+            /* Bleu nuit riche */
+            --text-color: #e2e8f0;
+            --header-bg: rgba(26, 32, 44, 0.8);
+            --header-title: #ffffff;
+            --header-subtitle: #b794f4;
+            /* Violet pastel */
+            --project-title: #93c5fd;
+            /* Bleu clair doux */
+            --project-text: #cbd5e0;
+            --project-bg: rgba(45, 55, 72, 0.3);
+            --project-border: #93c5fd;
+            --project-shadow: rgba(147, 197, 253, 0.2);
+            --project-shadow-hover: rgba(147, 197, 253, 0.5);
+            --jelly-btn-bg: #448271;
+            /* Violet original */
+            --jelly-btn-shadow: rgba(90, 153, 133, 0.3);
+            --jelly-btn-shadow-dark: rgba(15, 130, 101, 0.7);
+            --footer-bg: #2d3748;
+            /* Gris anthracite */
+            --footer-text: #e2e8f0;
+            --footer-link: #63b3ed;
+            --footer-link-hover: #90cdf4;
+            --scroll-top-bg: #6b7280;
+            /* Gris métallique */
+            --scroll-top-bg-hover: #f6ad55;
+            /* Orange chaleureux */
+            --scroll-top-icon: #ffffff;
+            --scroll-top-shadow: rgba(107, 114, 128, 0.3);
+        }
+
+        /* Style général du body */
+        html,
         body {
-            font-family: 'Roboto', 'Segoe UI', Arial, sans-serif;
-            background:rgb(200, 200, 200); /* Fond sombre */
-            color: #4CAF50; /* Vert vif pour texte principal */
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            overflow-x: hidden;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            overflow: hidden;
+            background: url('images/nebuleuse.jpg') no-repeat center center fixed;
+            background-size: cover;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            transition: background-color 0.4s, color 0.4s;
         }
 
-        .chat-container {
-            max-width: 950px;
-            margin: 0 auto;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .chat-header {
-            background: linear-gradient(90deg, #01579B, #1B5E20); /* Bleu et vert sombres */
-            color: #ffffff;
-            padding: 20px 30px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
+        /* Theme switch */
+        .theme-switch-container {
             position: fixed;
+            top: 20px;
+            right: 60px;
+            z-index: 1000;
+        }
+
+        /* From Uiverse.io by namecho */
+        .switch {
+            --button-width: 3.5em;
+            --button-height: 2em;
+            --toggle-diameter: 1.5em;
+            --button-toggle-offset: calc((var(--button-height) - var(--toggle-diameter)) / 2);
+            --toggle-shadow-offset: 10px;
+            --toggle-wider: 3em;
+            --color-grey: #cccccc;
+            --color-green: #18181A;
+            --toggle-size: 10px;
+            font-size: var(--toggle-size);
+        }
+
+        .slider {
+            display: inline-block;
+            width: var(--button-width);
+            height: var(--button-height);
+            background-color: var(--color-grey);
+            border-radius: calc(var(--button-height) / 2);
+            position: fixed;
+            transition: 0.3s all ease-in-out;
+        }
+
+        .slider::after {
+            content: "";
+            display: inline-block;
+            width: var(--toggle-diameter);
+            height: var(--toggle-diameter);
+            background-color: #fff;
+            border-radius: calc(var(--toggle-diameter) / 2);
+            position: absolute;
+            top: var(--button-toggle-offset);
+            transform: translateX(var(--button-toggle-offset));
+            box-shadow: var(--toggle-shadow-offset) 0 calc(var(--toggle-shadow-offset) * 4) rgba(0, 0, 0, 0.1);
+            transition: 0.3s all ease-in-out;
+        }
+
+        .switch input[type="checkbox"]:checked+.slider {
+            background-color: var(--color-green);
+        }
+
+        .switch input[type="checkbox"]:checked+.slider::after {
+            transform: translateX(calc(var(--button-width) - var(--toggle-diameter) - var(--button-toggle-offset)));
+            box-shadow: calc(var(--toggle-shadow-offset) * -1) 0 calc(var(--toggle-shadow-offset) * 4) rgba(0, 0, 0, 0.1);
+        }
+
+        .switch input[type="checkbox"] {
+            display: none;
+        }
+
+        .switch input[type="checkbox"]:active+.slider::after {
+            width: var(--toggle-wider);
+        }
+
+        .switch input[type="checkbox"]:checked:active+.slider::after {
+            transform: translateX(calc(var(--button-width) - var(--toggle-wider) - var(--button-toggle-offset)));
+        }
+
+        /* Section d'introduction (du portfolio) */
+        .portfolio-header {
+            text-align: center;
+            padding: 50px 20px;
+            background: var(--header-bg);
+            transition: background 0.4s;
+        }
+
+        .portfolio-header h1 {
+            font-size: 2.5em;
+            color: var(--header-title);
+            margin-bottom: 10px;
+        }
+
+        .portfolio-header p {
+            font-size: 1.2em;
+            color: var(--header-subtitle);
+        }
+
+        /* Section des projets (du portfolio) */
+        #projets {
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        #projets h2 {
+            font-size: 2em;
+            margin-bottom: 30px;
+            color: var(--header-title);
+        }
+
+        .projet-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .projet {
+            background: var(--project-bg);
+            padding: 20px;
+            border-radius: 10px;
+            transition: transform 0.3s ease, background 0.4s;
+        }
+
+        .projet:hover {
+            transform: scale(1.05);
+        }
+
+        .projet img {
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 2px solid var(--project-border);
+            box-shadow: 0 4px 15px var(--project-shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            margin-bottom: 15px;
+        }
+
+        .projet img::after {
+            content: '';
+            position: absolute;
             top: 0;
             left: 0;
-            right: 0;
-            z-index: 1000;
-            box-shadow: 0 4px 15px rgba(165, 165, 165, 0.3);
-            border-radius: 0 0 12px 12px;
-        }
-
-        .chat-header h1 {
-            font-size: 28px;
-            font-weight: 600;
-            text-shadow: 0 2px 4px rgba(58, 58, 58, 0.3);
-        }
-
-        .chat-header svg {
-            width: 40px;
-            height: 40px;
-        }
-
-        .chat-messages {
-            flex-grow: 1;
-            overflow-y: auto;
-            padding: 20px;
-            background:rgb(210, 210, 210); /* Gris sombre pour messages */
-            margin-top: 80px;
-            margin-bottom: 80px;
-        }
-
-        .message {
-            max-width: 75%;
-            margin: 10px 0;
-            padding: 12px 18px;
+            width: 100%;
+            height: 100%;
+            background: rgba(160, 160, 255, 0.2);
+            opacity: 0;
             border-radius: 10px;
-            animation: popIn 0.4s ease-out;
-            word-wrap: break-word;
-            box-shadow: 0 3px 10px rgba(164, 164, 164, 0.2);
+            transition: opacity 0.3s ease;
         }
 
-        .user-message {
-            background: linear-gradient(135deg, #01579B, #2E7D32); /* Bleu et vert sombres */
-            color: #ffffff;
-            margin-left: auto;
-            border-bottom-right-radius: 3px;
+        .projet img:hover {
+            transform: scale(1.03);
+            box-shadow: 0 6px 20px var(--project-shadow-hover);
         }
 
-        .ai-message {
-            background:rgb(115, 136, 147); /* Gris-bleu sombre */
-            color: #B0BEC5; /* Gris clair pour texte */
-            margin-right: auto;
-            border-bottom-left-radius: 3px;
-            border-left: 4px solid #4CAF50; /* Vert pour accent */
+        .projet img:hover::after {
+            opacity: 1;
         }
 
-        .ai-message img {
-            max-width: 100%;
-            border-radius: 10px;
-            margin-top: 10px;
+        .projet h3 {
+            font-size: 1.3em;
+            color: var(--project-title);
+            margin-bottom: 10px;
         }
 
-        .typing {
-            display: flex;
+        .projet p {
+            font-size: 0.9em;
+            color: var(--project-text);
+            margin-bottom: 15px;
+        }
+
+        /* Bouton Jelly (centré) */
+        .jelly-btn {
+            position: relative;
+            width: 150px;
+            height: 55px;
+            border-radius: 45px;
+            border: none;
+            background-color: var(--jelly-btn-bg);
+            color: rgb(196, 196, 196);
+            box-shadow: 0px 10px 10px var(--jelly-btn-shadow) inset,
+                0px 5px 10px rgba(5, 5, 5, 0.212),
+                0px -10px 10px var(--jelly-btn-shadow-dark) inset;
+            cursor: pointer;
+            display: block;
+            margin: 0 auto;
             align-items: center;
-            gap: 5px;
-            color: #4CAF50;
-            font-style: italic;
+            justify-content: center;
+            font-size: 1em;
+            font-family: 'Arial', sans-serif;
+            transition: background-color 0.3s ease;
         }
 
-        .typing span {
-            width: 8px;
-            height: 8px;
-            background: #0288D1;
+        .jelly-btn::before {
+            width: 70%;
+            height: 2px;
+            position: absolute;
+            background-color: rgba(250, 250, 250, 0.678);
+            content: "";
+            filter: blur(1px);
+            top: 7px;
             border-radius: 50%;
-            animation: bounce 1.2s infinite;
         }
 
-        .typing span:nth-child(2) { animation-delay: 0.2s; }
-        .typing span:nth-child(3) { animation-delay: 0.4s; }
+        .jelly-btn.clicked {
+            animation: jello-horizontal 0.9s both;
+        }
 
-        .input-area {
-            padding: 20px;
-            background:rgb(211, 211, 211); /* Gris sombre */
-            display: flex;
-            gap: 15px;
+        @keyframes jello-horizontal {
+            0% {
+                transform: scale3d(1, 1, 1);
+            }
+
+            30% {
+                transform: scale3d(1.25, 0.75, 1);
+            }
+
+            40% {
+                transform: scale3d(0.75, 1.25, 1);
+            }
+
+            50% {
+                transform: scale3d(1.15, 0.85, 1);
+            }
+
+            65% {
+                transform: scale3d(0.95, 1.05, 1);
+            }
+
+            75% {
+                transform: scale3d(1.05, 0.95, 1);
+            }
+
+            100% {
+                transform: scale3d(1, 1, 1);
+            }
+        }
+
+        /* Scroll Top (de Paradis Manga) */
+        .scroll-top {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--scroll-top-bg);
+            border: none;
+            font-weight: 600;
+            display: none;
             align-items: center;
+            justify-content: center;
+            box-shadow: 0px 0px 0px 4px var(--scroll-top-shadow);
+            cursor: pointer;
+            transition: width 0.3s ease, border-radius 0.3s ease, background-color 0.3s ease;
+            overflow: hidden;
             position: fixed;
             bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            max-width: 950px;
-            width: 100%;
-            box-shadow: 0 -4px 15px rgba(161, 161, 161, 0.3);
+            right: 20px;
             z-index: 1000;
-            border-radius: 12px;
         }
 
-        #chat-input {
-            flex-grow: 1;
-            padding: 15px 20px;
-            border: none;
-            border-radius: 30px;
-            font-size: 16px;
-            background:rgb(179, 178, 178); /* Gris plus clair pour input */
-            color:rgb(55, 58, 59); /* Texte gris clair */
-            box-shadow: 0 2px 5px rgba(166, 166, 166, 0.2);
-            transition: all 0.3s ease;
+        .scroll-top.visible {
+            display: flex;
         }
 
-        #chat-input:focus {
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.5); /* Vert pour focus */
+        .scroll-top .svgIcon {
+            width: 12px;
+            transition: transform 0.3s ease;
         }
 
-        #send-btn {
-            padding: 15px 30px;
-            background: linear-gradient(90deg, #01579B, #2E7D32);
-            color: #ffffff;
-            border: none;
-            border-radius: 30px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(117, 116, 116, 0.3);
+        .scroll-top .svgIcon path {
+            fill: var(--scroll-top-icon);
         }
 
-        #send-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(143, 143, 143, 0.4);
-            background: linear-gradient(90deg, #2E7D32, #01579B);
+        .scroll-top:hover {
+            width: 140px;
+            border-radius: 50px;
+            background-color: var(--scroll-top-bg-hover);
         }
 
-        .file-upload {
-            position: relative;
+        .scroll-top:hover .svgIcon {
+            transform: translateY(-200%);
         }
 
-        .file-upload input[type="file"] {
+        .scroll-top::before {
             position: absolute;
-            width: 24px;
-            height: 24px;
+            bottom: -20px;
+            content: "Retour en haut";
+            color: var(--scroll-top-icon);
+            font-size: 0px;
             opacity: 0;
-            cursor: pointer;
+            transition: font-size 0.3s ease, opacity 0.3s ease, bottom 0.3s ease;
         }
 
-        .file-upload label {
-            cursor: pointer;
-            color: #4CAF50;
+        .scroll-top:hover::before {
+            font-size: 13px;
+            opacity: 1;
+            bottom: 50%;
+            transform: translateY(50%);
+        }
+
+        /* Footer (de Paradis Manga) */
+        footer {
+            background: var(--footer-bg);
+            box-shadow: 0 -4px 30px rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            text-align: center;
+            width: 100%;
+            position: relative;
+            bottom: 0;
+            color: var(--footer-text);
+            box-sizing: border-box;
+            transition: background 0.4s, color 0.4s;
+        }
+
+        footer h2 {
+            color: var(--footer-text);
+            margin: 0 0 15px;
+        }
+
+        footer a {
+            color: var(--footer-link);
+            text-decoration: none;
             transition: color 0.3s ease;
-            display: block;
         }
 
-        .file-upload label:hover {
-            color: #0288D1;
+        footer a:hover {
+            color: var(--footer-link-hover);
+            text-decoration: underline;
         }
 
-        .file-upload svg {
-            width: 24px;
-            height: 24px;
+        footer p {
+            margin: 15px 0;
         }
 
-        @keyframes floatIn {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* Responsive adjustments */
+        .portfolio-header h1 {
+            font-size: 2em;
         }
 
-        @keyframes popIn {
-            from { opacity: 0; transform: scale(0.95); }
-            to { opacity: 1; transform: scale(1); }
+        .portfolio-header p {
+            font-size: 1em;
         }
 
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-5px); }
+        #projets h2 {
+            font-size: 1.5em;
         }
 
-        .chat-messages::-webkit-scrollbar {
+        .projet img {
+            border: 1px solid var(--project-border);
+            box-shadow: 0 2px 10px var(--project-shadow);
+        }
+
+        .projet h3 {
+            font-size: 1.1em;
+        }
+
+        .projet p {
+            font-size: 0.8em;
+        }
+
+        .jelly-btn {
+            width: 120px;
+            height: 45px;
+            font-size: 0.9em;
+        }
+
+        .scroll-top {
+            width: 40px;
+            height: 40px;
+            bottom: 15px;
+            right: 15px;
+        }
+
+        .scroll-top .svgIcon {
             width: 10px;
         }
 
-        .chat-messages::-webkit-scrollbar-thumb {
-            background: linear-gradient(#01579B, #2E7D32);
-            border-radius: 5px;
+        .scroll-top:hover {
+            width: 120px;
         }
 
-        .chat-messages::-webkit-scrollbar-track {
-            background: rgba(144, 144, 144, 0.2);
+        .scroll-top:hover::before {
+            font-size: 11px;
+        }
+
+        .scroll-top {
+            width: 35px;
+            height: 35px;
+            bottom: 10px;
+            right: 10px;
+        }
+
+        .scroll-top .svgIcon {
+            width: 9px;
+        }
+
+        .scroll-top:hover {
+            width: 100px;
+        }
+
+        .scroll-top:hover::before {
+            font-size: 10px;
         }
     </style>
 </head>
-<body>
-    <div class="chat-container">
-        <div class="chat-header">
-            <svg viewBox="0 0 24 24" fill="white">
-                <circle cx="12" cy="12" r="8" opacity="0.8"/>
-                <path d="M12 2a10 10 0 100 20 2 2 0 002-2H10a2 2 0 002-2z" opacity="0.3"/>
-            </svg>
-            <h1>Kepler AI Chat</h1>
-        </div>
-        <div class="chat-messages" id="chat-messages">
-            <div class="message ai-message">Bienvenue ! Je suis Kepler AI, prêt à explorer l'univers avec vous ! Utilisez l'icône caméra pour envoyer une image et identifier un chat ou un chien.</div>
-        </div>
-        <div class="input-area">
-            <div class="file-upload">
-                <input type="file" id="imageInput" accept="image/*" onchange="sendImage()">
-                <label for="imageInput">
-                    <svg fill="currentColor" width="24px" height="24px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                         viewBox="0 0 455 455" xml:space="preserve">
-                        <path d="M0,0v455h455V0H0z M259.405,80c17.949,0,32.5,14.551,32.5,32.5s-14.551,32.5-32.5,32.5s-32.5-14.551-32.5-32.5
-                    S241.456,80,259.405,80z M375,375H80v-65.556l83.142-87.725l96.263,68.792l69.233-40.271L375,299.158V375z"/>
-                    </svg>
-                </label>
-            </div>
-            <input type="text" id="chat-input" placeholder="Posez-moi une question...">
-            <button id="send-btn">Envoyer</button>
-        </div>
+
+<body data-theme="light">
+    <!-- Theme switch -->
+    <div class="theme-switch-container">
+        <label class="switch">
+            <input type="checkbox" id="theme-switch">
+            <span class="slider"></span>
+        </label>
     </div>
 
+    <!-- Section d'introduction (du portfolio) -->
+    <section class="portfolio-header">
+        <h1>Spark Hyacinthe</h1>
+        <p>Web Designer | HTML & CSS | Français & Malgache</p>
+    </section>
+
+    <!-- Section des projets (du portfolio) -->
+    <section id="projets">
+        <h2>Mes Projets</h2>
+        <div class="projet-grid">
+            <!-- Projet 1 : Chatbot -->
+            <div class="projet">
+                <img src="image/chatbot.png" alt="Projet Chatbot">
+                <h3>Projet 1 : Chatbot Chats vs Chiens</h3>
+                <p>Un chatbot en cours d’entraînement qui compare chats et chiens, fait des calculs simples, et donne
+                    des réponses par défaut ou aléatoires.</p>
+                <button class="jelly-btn" data-href="#">Voir le projet</button>
+            </div>
+            <!-- Projet 2 : Page Animé -->
+            <div class="projet">
+                <img src="image/page_anime.png" alt="Projet Page Animé">
+                <h3>Projet 2 : Page Animé</h3>
+                <p>Une page dédiée aux animés, avec des images et vidéos d’animés pour les fans de culture japonaise.
+                </p>
+                <button class="jelly-btn" data-href="#">Voir le projet</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bouton Scroll Top (de Paradis Manga) -->
+    <button class="scroll-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+        <svg class="svgIcon" viewBox="0 0 384 512">
+            <path
+                d="M214.6 41.4c-12.5-12.5-32.8-12.5-45.3 0l-160 160c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 141.2V448c0 17.7 14.3 32 32 32s32-14.3 32-32V141.2L329.4 246.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-160-160z">
+            </path>
+        </svg>
+    </button>
+
+    <!-- Section de contact -->
+    <footer>
+        <h2>Contactez-moi</h2>
+        <p>Email : <a href="mailto:sparkhyacinthe@example.com">sparkhyacinthe@example.com</a></p>
+        <p>Fiverr : <a href="LIEN_VERS_TON_PROFIL_FIVERR">Mon profil Fiverr</a></p>
+    </footer>
+
+    <!-- JavaScript pour gérer les interactions -->
     <script>
-        const chatMessages = document.getElementById('chat-messages');
-        const chatInput = document.getElementById('chat-input');
-        const sendBtn = document.getElementById('send-btn');
-        const imageInput = document.getElementById('imageInput');
-
-        function addMessage(text, className, imageUrl = null) {
-            const messageDiv = document.createElement('div');
-            messageDiv.classList.add('message', className);
-            messageDiv.textContent = text;
-            if (imageUrl) {
-                const img = document.createElement('img');
-                img.src = imageUrl;
-                messageDiv.appendChild(img);
-            }
-            chatMessages.appendChild(messageDiv);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        }
-
-        async function delay(ms) {
-            return new Promise(resolve => setTimeout(resolve, ms));
-        }
-
-        async function sendMessage() {
-            const message = chatInput.value.trim();
-            if (!message) return;
-
-            addMessage(message, 'user-message');
-
-            const typingDiv = document.createElement('div');
-            typingDiv.classList.add('message', 'ai-message', 'typing');
-            typingDiv.innerHTML = 'Kepler réfléchit... <span></span><span></span><span></span>';
-            chatMessages.appendChild(typingDiv);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-
-            try {
-                const response = await fetch('/api/chat', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ message })
-                });
-                const data = await response.json();
-
-                await delay(2000);
-                chatMessages.removeChild(typingDiv);
-                addMessage(data.response, 'ai-message');
-            } catch (error) {
-                await delay(2000);
-                chatMessages.removeChild(typingDiv);
-                addMessage('Erreur cosmique ! Réessayez.', 'ai-message');
-            }
-
-            chatInput.value = '';
-        }
-
-        async function sendImage() {
-            const file = imageInput.files[0];
-            if (!file) return;
-
-            addMessage('Image envoyée', 'user-message');
-
-            const typingDiv = document.createElement('div');
-            typingDiv.classList.add('message', 'ai-message', 'typing');
-            typingDiv.innerHTML = 'Kepler analyse l’image... <span></span><span></span><span></span>';
-            chatMessages.appendChild(typingDiv);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-
-            const formData = new FormData();
-            formData.append('file', file);
-
-            try {
-                const response = await fetch('/api/predict', {
-                    method: 'POST',
-                    body: formData
-                });
-                const data = await response.json();
-
-                await delay(3500);
-                chatMessages.removeChild(typingDiv);
-                addMessage(data.response, 'ai-message', data.image_url);
-            } catch (error) {
-                await delay(3500);
-                chatMessages.removeChild(typingDiv);
-                addMessage('Erreur lors de l’analyse de l’image !', 'ai-message');
-            }
-
-            imageInput.value = '';
-        }
-
-        sendBtn.addEventListener('click', sendMessage);
-        chatInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') sendMessage();
+        // Gestion du thème
+        const themeSwitch = document.getElementById('theme-switch');
+        themeSwitch.addEventListener('change', () => {
+            document.body.setAttribute('data-theme', themeSwitch.checked ? 'dark' : 'light');
         });
+
+        // Gestion des boutons Jelly au clic
+        document.querySelectorAll('.jelly-btn').forEach(button => {
+            button.addEventListener('click', function () {
+                this.classList.remove('clicked');
+                void this.offsetWidth;
+                this.classList.add('clicked');
+                const href = this.getAttribute('data-href');
+                setTimeout(() => {
+                    if (href && href !== '#') {
+                        window.location.href = href;
+                    }
+                }, 900);
+            });
+        });
+
+        // Gestion du bouton Scroll Top
+        const scrollTopButton = document.querySelector('.scroll-top');
+        function updateScrollTopVisibility() {
+            const hasScroll = document.body.scrollHeight > window.innerHeight;
+            const scrolledDown = window.scrollY > 100;
+            if (hasScroll && scrolledDown) {
+                scrollTopButton.classList.add('visible');
+            } else {
+                scrollTopButton.classList.remove('visible');
+            }
+        }
+
+        window.addEventListener('scroll', updateScrollTopVisibility);
+        window.addEventListener('resize', updateScrollTopVisibility);
+        document.addEventListener('DOMContentLoaded', updateScrollTopVisibility);
     </script>
 </body>
+
 </html>
