@@ -3,439 +3,348 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio de Spark Hyacinthe - Paradis Manga</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <style type="text/css">
-        /* Réinitialisation des styles par défaut */
+    <title>Kepler AI Chat</title>
+    <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        /* Style général du body */
-        html, body {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            overflow-x: hidden;
-        }
-
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Roboto', 'Segoe UI', Arial, sans-serif;
+            background:rgb(200, 200, 200); /* Fond sombre */
+            color: #4CAF50; /* Vert vif pour texte principal */
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            background: url('images/nebuleuse.jpg') no-repeat center center fixed;
-            background-size: cover;
-            background-color: #0d0d1a; /* Bleu nuit comme couleur de secours */
-            color: #e0e0e0; /* Texte gris clair */
-            line-height: 1.6;
+            overflow: hidden;
         }
 
-        /* Section d'introduction (du portfolio) */
-        .portfolio-header {
-            text-align: center;
-            padding: 50px 20px;
-            background: rgba(0, 0, 0, 0.7);
-        }
-
-        .portfolio-header h1 {
-            font-size: 2.5em;
-            color: #ffffff;
-            margin-bottom: 10px;
-        }
-
-        .portfolio-header p {
-            font-size: 1.2em;
-            color: #a0a0ff;
-        }
-
-        /* Section des projets (du portfolio) */
-        #projets {
-            padding: 40px 20px;
-            text-align: center;
-        }
-
-        #projets h2 {
-            font-size: 2em;
-            margin-bottom: 30px;
-            color: #ffffff;
-        }
-
-        .projet-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            max-width: 1200px;
+        .chat-container {
+            max-width: 950px;
             margin: 0 auto;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
-        .projet {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 20px;
-            border-radius: 10px;
-            transition: transform 0.3s ease;
-        }
-
-        .projet:hover {
-            transform: scale(1.05);
-        }
-
-        .projet img {
-            width: 100%;
-            aspect-ratio: 4 / 3;
-            object-fit: cover;
-            border-radius: 10px;
-            border: 2px solid #a0a0ff;
-            box-shadow: 0 4px 15px rgba(160, 160, 255, 0.3);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            position: relative;
-            margin-bottom: 15px;
-        }
-
-        .projet img::after {
-            content: '';
-            position: absolute;
+        .chat-header {
+            background: linear-gradient(90deg, #01579B, #1B5E20); /* Bleu et vert sombres */
+            color: #ffffff;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(160, 160, 255, 0.2);
-            opacity: 0;
-            border-radius: 10px;
-            transition: opacity 0.3s ease;
+            right: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(165, 165, 165, 0.3);
+            border-radius: 0 0 12px 12px;
         }
 
-        .projet img:hover {
-            transform: scale(1.03);
-            box-shadow: 0 6px 20px rgba(160, 160, 255, 0.5);
-        }
-
-        .projet img:hover::after {
-            opacity: 1;
-        }
-
-        .projet h3 {
-            font-size: 1.3em;
-            color: #a0a0ff;
-            margin-bottom: 10px;
-        }
-
-        .projet p {
-            font-size: 0.9em;
-            color: #d0d0d0;
-            margin-bottom: 15px;
-        }
-
-        /* Bouton Jelly (centré) */
-        .jelly-btn {
-            position: relative;
-            width: 150px;
-            height: 55px;
-            border-radius: 45px;
-            border: none;
-            background-color: #a0a0ff;
-            color: white;
-            box-shadow: 0px 10px 10px rgba(160, 160, 255, 0.3) inset,
-                        0px 5px 10px rgba(5, 5, 5, 0.212),
-                        0px -10px 10px rgba(80, 80, 255, 0.7) inset;
-            cursor: pointer;
-            display: block; /* Pour permettre le centrage */
-            margin: 0 auto; /* Centrage horizontal */
-            align-items: center;
-            justify-content: center;
-            font-size: 1em;
-            font-family: 'Arial', sans-serif;
-            transition: background-color 0.3s ease;
-        }
-
-        .jelly-btn::before {
-            width: 70%;
-            height: 2px;
-            position: absolute;
-            background-color: rgba(250, 250, 250, 0.678);
-            content: "";
-            filter: blur(1px);
-            top: 7px;
-            border-radius: 50%;
-        }
-
-        .jelly-btn.clicked {
-            animation: jello-horizontal 0.9s both;
-        }
-
-        @keyframes jello-horizontal {
-            0% {
-                transform: scale3d(1, 1, 1);
-            }
-            30% {
-                transform: scale3d(1.25, 0.75, 1);
-            }
-            40% {
-                transform: scale3d(0.75, 1.25, 1);
-            }
-            50% {
-                transform: scale3d(1.15, 0.85, 1);
-            }
-            65% {
-                transform: scale3d(0.95, 1.05, 1);
-            }
-            75% {
-                transform: scale3d(1.05, 0.95, 1);
-            }
-            100% {
-                transform: scale3d(1, 1, 1);
-            }
-        }
-
-        /* Scroll Top (de Paradis Manga) */
-        .scroll-top {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background-color: #2a4b8d;
-            border: none;
+        .chat-header h1 {
+            font-size: 28px;
             font-weight: 600;
-            display: none;
+            text-shadow: 0 2px 4px rgba(58, 58, 58, 0.3);
+        }
+
+        .chat-header svg {
+            width: 40px;
+            height: 40px;
+        }
+
+        .chat-messages {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 20px;
+            background:rgb(210, 210, 210); /* Gris sombre pour messages */
+            margin-top: 80px;
+            margin-bottom: 80px;
+        }
+
+        .message {
+            max-width: 75%;
+            margin: 10px 0;
+            padding: 12px 18px;
+            border-radius: 10px;
+            animation: popIn 0.4s ease-out;
+            word-wrap: break-word;
+            box-shadow: 0 3px 10px rgba(164, 164, 164, 0.2);
+        }
+
+        .user-message {
+            background: linear-gradient(135deg, #01579B, #2E7D32); /* Bleu et vert sombres */
+            color: #ffffff;
+            margin-left: auto;
+            border-bottom-right-radius: 3px;
+        }
+
+        .ai-message {
+            background:rgb(115, 136, 147); /* Gris-bleu sombre */
+            color: #B0BEC5; /* Gris clair pour texte */
+            margin-right: auto;
+            border-bottom-left-radius: 3px;
+            border-left: 4px solid #4CAF50; /* Vert pour accent */
+        }
+
+        .ai-message img {
+            max-width: 100%;
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+
+        .typing {
+            display: flex;
             align-items: center;
-            justify-content: center;
-            box-shadow: 0px 0px 0px 4px rgba(0, 196, 180, 0.253);
-            cursor: pointer;
-            transition: width 0.3s ease, border-radius 0.3s ease, background-color 0.3s ease;
-            overflow: hidden;
+            gap: 5px;
+            color: #4CAF50;
+            font-style: italic;
+        }
+
+        .typing span {
+            width: 8px;
+            height: 8px;
+            background: #0288D1;
+            border-radius: 50%;
+            animation: bounce 1.2s infinite;
+        }
+
+        .typing span:nth-child(2) { animation-delay: 0.2s; }
+        .typing span:nth-child(3) { animation-delay: 0.4s; }
+
+        .input-area {
+            padding: 20px;
+            background:rgb(211, 211, 211); /* Gris sombre */
+            display: flex;
+            gap: 15px;
+            align-items: center;
             position: fixed;
             bottom: 20px;
-            right: 20px;
-            z-index: 1000;
-        }
-
-        .scroll-top.visible {
-            display: flex;
-        }
-
-        .scroll-top .svgIcon {
-            width: 12px;
-            transition: transform 0.3s ease;
-        }
-
-        .scroll-top .svgIcon path {
-            fill: #f0f8ff;
-        }
-
-        .scroll-top:hover {
-            width: 140px;
-            border-radius: 50px;
-            background-color: #00C4B4;
-        }
-
-        .scroll-top:hover .svgIcon {
-            transform: translateY(-200%);
-        }
-
-        .scroll-top::before {
-            position: absolute;
-            bottom: -20px;
-            content: "Retour en haut";
-            color: #f0f8ff;
-            font-size: 0px;
-            opacity: 0;
-            transition: font-size 0.3s ease, opacity 0.3s ease, bottom 0.3s ease;
-        }
-
-        .scroll-top:hover::before {
-            font-size: 13px;
-            opacity: 1;
-            bottom: 50%;
-            transform: translateY(50%);
-        }
-
-        /* Footer (de Paradis Manga) */
-        footer {
-            background: #1e1e1e;
-            box-shadow: 0 -4px 30px rgba(0, 0, 0, 0.5);
-            padding: 20px;
-            text-align: center;
+            left: 50%;
+            transform: translateX(-50%);
+            max-width: 950px;
             width: 100%;
+            box-shadow: 0 -4px 15px rgba(161, 161, 161, 0.3);
+            z-index: 1000;
+            border-radius: 12px;
+        }
+
+        #chat-input {
+            flex-grow: 1;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 30px;
+            font-size: 16px;
+            background:rgb(179, 178, 178); /* Gris plus clair pour input */
+            color:rgb(55, 58, 59); /* Texte gris clair */
+            box-shadow: 0 2px 5px rgba(166, 166, 166, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        #chat-input:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.5); /* Vert pour focus */
+        }
+
+        #send-btn {
+            padding: 15px 30px;
+            background: linear-gradient(90deg, #01579B, #2E7D32);
+            color: #ffffff;
+            border: none;
+            border-radius: 30px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(117, 116, 116, 0.3);
+        }
+
+        #send-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(143, 143, 143, 0.4);
+            background: linear-gradient(90deg, #2E7D32, #01579B);
+        }
+
+        .file-upload {
             position: relative;
-            bottom: 0;
-            color: #f0f8ff;
-            box-sizing: border-box;
         }
 
-        footer h2 {
-            color: #f0f8ff;
-            margin: 0 0 15px;
+        .file-upload input[type="file"] {
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            opacity: 0;
+            cursor: pointer;
         }
 
-        footer a {
-            color: #2a4b8d;
-            text-decoration: none;
+        .file-upload label {
+            cursor: pointer;
+            color: #4CAF50;
             transition: color 0.3s ease;
+            display: block;
         }
 
-        footer a:hover {
-            color: #f0f8ff;
-            text-decoration: underline;
+        .file-upload label:hover {
+            color: #0288D1;
         }
 
-        footer p {
-            margin: 15px 0;
+        .file-upload svg {
+            width: 24px;
+            height: 24px;
         }
 
-            .portfolio-header h1 {
-                font-size: 2em;
-            }
+        @keyframes floatIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-            .portfolio-header p {
-                font-size: 1em;
-            }
+        @keyframes popIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
 
-            #projets h2 {
-                font-size: 1.5em;
-            }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
 
-            .projet img {
-                border: 1px solid #a0a0ff;
-                box-shadow: 0 2px 10px rgba(160, 160, 255, 0.2);
-            }
+        .chat-messages::-webkit-scrollbar {
+            width: 10px;
+        }
 
-            .projet h3 {
-                font-size: 1.1em;
-            }
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: linear-gradient(#01579B, #2E7D32);
+            border-radius: 5px;
+        }
 
-            .projet p {
-                font-size: 0.8em;
-            }
-
-            .jelly-btn {
-                width: 120px;
-                height: 45px;
-                font-size: 0.9em;
-            }
-
-            .scroll-top {
-                width: 40px;
-                height: 40px;
-                bottom: 15px;
-                right: 15px;
-            }
-
-            .scroll-top .svgIcon {
-                width: 10px;
-            }
-
-            .scroll-top:hover {
-                width: 120px;
-            }
-
-            .scroll-top:hover::before {
-                font-size: 11px;
-            }
-
-            .scroll-top {
-                width: 35px;
-                height: 35px;
-                bottom: 10px;
-                right: 10px;
-            }
-
-            .scroll-top .svgIcon {
-                width: 9px;
-            }
-
-            .scroll-top:hover {
-                width: 100px;
-            }
-
-            .scroll-top:hover::before {
-                font-size: 10px;
-            }
+        .chat-messages::-webkit-scrollbar-track {
+            background: rgba(144, 144, 144, 0.2);
+        }
     </style>
 </head>
 <body>
-    <!-- Section d'introduction (du portfolio) -->
-    <section class="portfolio-header">
-        <h1>Spark Hyacinthe</h1>
-        <p>Web Designer | HTML & CSS | Français & Malgache</p>
-    </section>
-
-    <!-- Section des projets (du portfolio) -->
-    <section id="projets">
-        <h2>Mes Projets</h2>
-        <div class="projet-grid">
-            <!-- Projet 1 : Chatbot -->
-            <div class="projet">
-                <img src="image/chatbot.png" alt="Projet Chatbot">
-                <h3>Projet 1 : Chatbot Chats vs Chiens</h3>
-                <p>Un chatbot en cours d’entraînement qui compare chats et chiens, fait des calculs simples, et donne des réponses par défaut ou aléatoires.</p>
-                <button class="jelly-btn" data-href="#">Voir le projet</button>
-            </div>
-            <!-- Projet 2 : Page Animé -->
-            <div class="projet">
-                <img src="image/page_anime.png" alt="Projet Page Animé">
-                <h3>Projet 2 : Page Animé</h3>
-                <p>Une page dédiée aux animés, avec des images et vidéos d’animés pour les fans de culture japonaise.</p>
-                <button class="jelly-btn" data-href="#">Voir le projet</button>
-            </div>
+    <div class="chat-container">
+        <div class="chat-header">
+            <svg viewBox="0 0 24 24" fill="white">
+                <circle cx="12" cy="12" r="8" opacity="0.8"/>
+                <path d="M12 2a10 10 0 100 20 2 2 0 002-2H10a2 2 0 002-2z" opacity="0.3"/>
+            </svg>
+            <h1>Kepler AI Chat</h1>
         </div>
-    </section>
+        <div class="chat-messages" id="chat-messages">
+            <div class="message ai-message">Bienvenue ! Je suis Kepler AI, prêt à explorer l'univers avec vous ! Utilisez l'icône caméra pour envoyer une image et identifier un chat ou un chien.</div>
+        </div>
+        <div class="input-area">
+            <div class="file-upload">
+                <input type="file" id="imageInput" accept="image/*" onchange="sendImage()">
+                <label for="imageInput">
+                    <svg fill="currentColor" width="24px" height="24px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                         viewBox="0 0 455 455" xml:space="preserve">
+                        <path d="M0,0v455h455V0H0z M259.405,80c17.949,0,32.5,14.551,32.5,32.5s-14.551,32.5-32.5,32.5s-32.5-14.551-32.5-32.5
+                    S241.456,80,259.405,80z M375,375H80v-65.556l83.142-87.725l96.263,68.792l69.233-40.271L375,299.158V375z"/>
+                    </svg>
+                </label>
+            </div>
+            <input type="text" id="chat-input" placeholder="Posez-moi une question...">
+            <button id="send-btn">Envoyer</button>
+        </div>
+    </div>
 
-    <!-- Bouton Scroll Top (de Paradis Manga) -->
-    <button class="scroll-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
-        <svg class="svgIcon" viewBox="0 0 384 512">
-            <path d="M214.6 41.4c-12.5-12.5-32.8-12.5-45.3 0l-160 160c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 141.2V448c0 17.7 14.3 32 32 32s32-14.3 32-32V141.2L329.4 246.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-160-160z"></path>
-        </svg>
-    </button>
-
-
-    <!-- Section de contact -->
-    <footer>
-        <h2>Contactez-moi</h2>
-        <p>Email : sparkhyacinthe@example.com</p>
-        <p>Fiverr : <a href="LIEN_VERS_TON_PROFIL_FIVERR">Mon profil Fiverr</a></p>
-    </footer>
-    <!-- JavaScript pour gérer les interactions -->
     <script>
-        // Gestion de la navbar
-        function toggleNavbar() {
-            var x = document.getElementById("myNavbar");
-            x.classList.toggle("show");
-        }
-// Animation des boutons Jelly au clic
-document.querySelectorAll('.jelly-btn').forEach(button => {
-    button.addEventListener('click', function() {
-        // Réinitialise l'animation en supprimant et réappliquant la classe
-        this.classList.remove('clicked');
-        // Force un reflow pour relancer l'animation
-        void this.offsetWidth;
-        this.classList.add('clicked');
-        
-        const href = this.getAttribute('data-href');
-        setTimeout(() => {
-            if (href && href !== '#') {
-                window.location.href = href;
-            }
-        }, 900);
-    });
-});
+        const chatMessages = document.getElementById('chat-messages');
+        const chatInput = document.getElementById('chat-input');
+        const sendBtn = document.getElementById('send-btn');
+        const imageInput = document.getElementById('imageInput');
 
-        // Gestion du bouton Scroll Top
-        const scrollTopButton = document.querySelector('.scroll-top');
-
-        function updateScrollTopVisibility() {
-            const hasScroll = document.body.scrollHeight > window.innerHeight;
-            const scrolledDown = window.scrollY > 100;
-            if (hasScroll && scrolledDown) {
-                scrollTopButton.classList.add('visible');
-            } else {
-                scrollTopButton.classList.remove('visible');
+        function addMessage(text, className, imageUrl = null) {
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('message', className);
+            messageDiv.textContent = text;
+            if (imageUrl) {
+                const img = document.createElement('img');
+                img.src = imageUrl;
+                messageDiv.appendChild(img);
             }
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
         }
 
-        window.addEventListener('scroll', updateScrollTopVisibility);
-        window.addEventListener('resize', updateScrollTopVisibility);
-        document.addEventListener('DOMContentLoaded', updateScrollTopVisibility);
+        async function delay(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        async function sendMessage() {
+            const message = chatInput.value.trim();
+            if (!message) return;
+
+            addMessage(message, 'user-message');
+
+            const typingDiv = document.createElement('div');
+            typingDiv.classList.add('message', 'ai-message', 'typing');
+            typingDiv.innerHTML = 'Kepler réfléchit... <span></span><span></span><span></span>';
+            chatMessages.appendChild(typingDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            try {
+                const response = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message })
+                });
+                const data = await response.json();
+
+                await delay(2000);
+                chatMessages.removeChild(typingDiv);
+                addMessage(data.response, 'ai-message');
+            } catch (error) {
+                await delay(2000);
+                chatMessages.removeChild(typingDiv);
+                addMessage('Erreur cosmique ! Réessayez.', 'ai-message');
+            }
+
+            chatInput.value = '';
+        }
+
+        async function sendImage() {
+            const file = imageInput.files[0];
+            if (!file) return;
+
+            addMessage('Image envoyée', 'user-message');
+
+            const typingDiv = document.createElement('div');
+            typingDiv.classList.add('message', 'ai-message', 'typing');
+            typingDiv.innerHTML = 'Kepler analyse l’image... <span></span><span></span><span></span>';
+            chatMessages.appendChild(typingDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            const formData = new FormData();
+            formData.append('file', file);
+
+            try {
+                const response = await fetch('/api/predict', {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await response.json();
+
+                await delay(3500);
+                chatMessages.removeChild(typingDiv);
+                addMessage(data.response, 'ai-message', data.image_url);
+            } catch (error) {
+                await delay(3500);
+                chatMessages.removeChild(typingDiv);
+                addMessage('Erreur lors de l’analyse de l’image !', 'ai-message');
+            }
+
+            imageInput.value = '';
+        }
+
+        sendBtn.addEventListener('click', sendMessage);
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendMessage();
+        });
     </script>
 </body>
 </html>
